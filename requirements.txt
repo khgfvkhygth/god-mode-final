@@ -1,6 +1,7 @@
+xgboost
 streamlit
 selenium
 pytesseract
 pillow
-xgboost
 pandas
+
