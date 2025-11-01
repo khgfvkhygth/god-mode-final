@@ -1,7 +1,0 @@
-xgboost
-streamlit
-selenium
-pytesseract
-pillow
-pandas
-
