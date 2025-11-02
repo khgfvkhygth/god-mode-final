@@ -1,17 +1,14 @@
 import time
 import pytesseract
 import webbrowser
+from pathlib import Path
 from PIL import ImageGrab, ImageOps, ImageEnhance
 import pandas as pd
 import json
 from datetime import datetime
 from ai_engine import load_model, predict_next
 
-# Launch bustabit.com in browser automatically
 webbrowser.open("https://www.bustabit.com")
-
-# Optional: set tesseract path if needed
-# pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
 x, y, width, height = 100, 200, 150, 50
 padding = 20
@@ -53,7 +50,7 @@ while True:
         }
         result, confidence = predict_next(features, model)
 
-        with open("live_data.json", "w") as f:
+        with open("live_data.json", "w", encoding="utf-8") as f:
             json.dump(features, f)
 
         log_entry = [datetime.now(), multiplier, result, confidence]
@@ -61,7 +58,6 @@ while True:
             "prediction_log.csv", mode="a", header=not Path("prediction_log.csv").exists(), index=False
         )
 
-        # Save for retraining
         training_log.append({
             "avg_5": multiplier,
             "avg_10": multiplier,
@@ -75,7 +71,7 @@ while True:
         if round_counter >= 10:
             df_train = pd.DataFrame(training_log)
             model = retrain_model(df_train)
-            print("🔁 Model retrained with last 10 rounds.")
+            print("Model retrained with last 10 rounds.")
             training_log.clear()
             round_counter = 0
 
